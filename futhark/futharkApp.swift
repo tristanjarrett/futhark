@@ -15,3 +15,15 @@ struct futharkApp: App {
         }
     }
 }
+
+//@main
+//struct futharkApp: App {
+//    var body: some Scene {
+//        WindowGroup {
+//            NavigationView {
+//                ContentView()
+//                    .navigationTitle("Futhark Translator")
+//            }
+//        }
+//    }
+//}
