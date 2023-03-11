@@ -51,7 +51,7 @@ struct ContentView: View {
     @State private var inputText = ""
     
     // Define the state variable to hold the output text
-    @State private var outputText = "Hi, you can copy me! Does this drop down to the next line and if so does it leave the copy button at the top of the screen?"
+    @State private var outputText = ""
     
     var body: some View {
         ZStack {
@@ -98,33 +98,36 @@ struct ContentView: View {
                             .opacity(inputText.isEmpty ? 0.25 : 1)
                     }
                     
-                    VStack {
-                        HStack(alignment: .top) {
-                            Text(outputText)
-                                .frame(maxWidth: .infinity, alignment: .topLeading)
-                                .font(.system(size: 24, weight: .bold))
-                                .lineLimit(nil)
-                                .padding()
+                    if !inputText.isEmpty {
+                        VStack {
+                            HStack(alignment: .top) {
+                                Text(outputText)
+                                    .frame(maxWidth: .infinity, alignment: .topLeading)
+                                    .font(.system(size: 24, weight: .bold))
+                                    .lineLimit(nil)
+                                    .padding()
+                                
+                                Button(action: {
+                                    UIPasteboard.general.string = outputText
+                                }) {
+                                    Image(systemName: "doc.on.doc.fill")
+                                        .foregroundColor(Color.black)
+                                        .padding(.all, 20)
+                                }
+                            }
                             
-                            Button(action: {
-                                UIPasteboard.general.string = outputText
-                            }) {
-                                Image(systemName: "doc.on.doc.fill")
-                                    .foregroundColor(Color.black)
-                                    .padding(.all, 20)
-                            }
+                            Spacer()
                         }
-                        
-                        Spacer()
+                        .frame(maxWidth: .infinity, maxHeight: .infinity / 2)
+                        .background(Color.gray.opacity(0.1))
+                        .gesture(
+                            LongPressGesture(minimumDuration: 1)
+                                .onEnded { _ in
+                                    UIPasteboard.general.string = outputText
+                                }
+                        )
                     }
-                    .frame(maxWidth: .infinity, maxHeight: .infinity / 2)
-                    .background(Color.gray.opacity(0.1))
-                    .gesture(
-                        LongPressGesture(minimumDuration: 1)
-                            .onEnded { _ in
-                                UIPasteboard.general.string = outputText
-                            }
-                    )
+                    
                 }
                 .padding(.vertical)
                 .tabItem {
